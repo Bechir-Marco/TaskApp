@@ -1,10 +1,10 @@
-const express = require('express')
-require('./db/mongoose')
-const userRouter = require('./routers/user')
-const taskRouter = require('./routers/task')
+const express = require("express");
+require("./db/mongoose");
+const userRouter = require("./routers/user");
+const taskRouter = require("./routers/task");
 
-const app = express()
-const port = process.env.PORT || 3000
+const app = express();
+const port = process.env.PORT || 3000;
 
 // app.use((req, res, next) => {
 //     if (req.method === 'GET') {
@@ -14,27 +14,29 @@ const port = process.env.PORT || 3000
 //     }
 // })
 
-app.use((req, res, next) => {
-    res.status(503).send('Site is currently down. Check back soon!')
-    
-})
+// app.use((req, res, next) => {
+//     res.status(503).send('Site is currently down. Check back soon!')
+// })
 
-app.use(express.json())
-app.use(userRouter)
-app.use(taskRouter)
+app.use(express.json());
+app.use(userRouter);
+app.use(taskRouter);
 
 app.listen(port, () => {
-    console.log('Server is up on port ' + port)
-})
+  console.log("Server is up on port " + port);
+});
 
-const jwt = require('jsonwebtoken')
+const Task = require("./models/task");
+const User = require("./models/user");
 
-const myFunction = async () => {
-    const token = jwt.sign({ _id: 'abc123' }, 'thisismynewcourse', { expiresIn: '7 days' })
-    console.log(token)
+// const main = async () => {
+//   // const task = await Task.findById('5c2e505a3253e18a43e612e6')
+//   // await task.populate('owner').execPopulate()
+//   // console.log(task.owner)
 
-    const data = jwt.verify(token, 'thisismynewcourse')
-    console.log(data)
-}
+//   const user = await User.findById("5c2e4dcb5eac678a23725b5b");
+//   await user.populate("tasks").execPopulate();
+//   console.log(user.tasks);
+// };
 
-myFunction()
+// main();

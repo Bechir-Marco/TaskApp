@@ -76,15 +76,19 @@ router.patch('/users/me', auth, async (req, res) => {
 })
 
 router.delete('/users/me', auth, async (req, res) => {
-    try {
-        await req.user.remove()
-        canceleationEmail(req.user.email, req.user.name)
-        res.send(req.user)
-        caneclationEmail(req.user.email, req.user.name)
-    } catch (e) {
-        res.status(500).send()
+  try {
+    const user = await User.findByIdAndDelete(req.user._id);
+    if (!user) {
+      return res.status(404).send();
     }
-})
+      canceleationEmail(req.user.email, req.user.name);
+     
+    res.status(200).send();
+  } catch (e) {
+    res.status(500).send();
+  }
+});
+
 
 const upload = multer({
     limits: {

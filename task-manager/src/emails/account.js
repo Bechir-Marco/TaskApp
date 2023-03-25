@@ -1,13 +1,33 @@
-const mailgun = require('mailgun-js');
-const mailgun = require('mailgun-js');
-const DOMAIN = 'sandboxd1778f2f58b345ed89d88dee527afbdc.mailgun.org';
-const mg = mailgun({ apiKey: api_key, domain: DOMAIN });
-const data = {
-  from: 'Excited User <bechir.marko@gmail.com>',
-  to: 'bechir.marko@gmail.com, YOU@YOUR_DOMAIN_NAME',
-  subject: 'Hello',
-  text: 'Testing some Mailgun awesomness!',
-};
-mg.messages().send(data, function (error, body) {
-  console.log(body);
-});
+const nodemailer = require('nodemailer');
+// Import NodeMailer (after npm install)
+
+const sendEmail =  ()=> {
+  // Async function enables allows handling of promises with await
+
+  // First, define send settings by creating a new transporter:
+  let transporter = nodemailer.createTransport({
+    host: 'smtp.gmail.com', // SMTP server address (usually mail.your-domain.com)
+    port: 465, // Port for SMTP (usually 465)
+    secure: true, // Usually true if connecting to port 465
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASSWORD, // Password (for gmail, your app password)
+      // ⚠️ For better security, use environment variables set on the server for these values when deploying
+    },
+  });
+
+  // Define and send message inside transporter.sendEmail() and await info about send from promise:
+  let info =  transporter.sendMail({
+    from: process.env.EMAIL_USER,
+    to: 'bechir.marko@gmail.com',
+    subject: 'Testing, testing, 123',
+    html: `
+    <h1>Hello there</h1>
+    <p>Welcome to The app </p>
+    `,
+  });
+
+  console.log(info.messageId); // Random ID generated after successful send (optional)
+}
+
+sendEmail()
